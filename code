@@ -1,0 +1,26 @@
+#data_preparation:
+
+def data_preparation(test_percentage = 0.33, random_seed=0):
+    """
+    This function filters the digits (1, 7) from the dataset and randomly splits it in train and test set.
+    """
+    global digits
+    data = digits["data"]
+    target = digits["target"]
+    
+    # Data filering 
+    num_1, num_2 = 1, 7
+    mask = np.logical_or(target == num_1, target == num_2)
+    data = data[mask]/data.max()
+    target = target[mask]
+    
+    # Relabel targets
+    target[target == num_1] = 0
+    target[target == num_2] = 1
+
+    # Random split
+    x_training, x_test, y_training, y_test = train_test_split(data, target, test_size=test_percentage,
+                                                                      random_state=random_seed)
+    
+    
+    return x_training, x_test, y_training, y_test
